@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>予約詳細</h2>
+    <p>
+        予約ID {{ object.id }}
+    </p>
+    <p>
+        お名前 {{ object.last_name }} {{ object.first_name }}
+    </p>
+    <p>
+        予約日時 {{ object.reservation_date|date:"Y/n/d" }} 
+        {{ time }}
+    </p>
+    <p>
+        予約人数 {{ object.reservation_count }}
+    </p>
+    <p>
+        電話番号 {{ object.tell }}
+    </p>
+    <p>
+        お祝い {{ celebration_existence }}
+    </p>
+    <p>
+        お店への要望 {{ object.demand }}
+    </p>
+    <button>
+        <a href="{% url 'reservations:reservationsList' %}">
+        戻る
+        </a>
+    </button>
+    <button>
+        <a href="{% url 'reservations:reservationUpdate' pk=object.id %}">
+        更新
+        </a>
+    </button>
+    <button>
+        <a href="{% url 'reservations:reservationDelete' pk=object.id %}">
+        削除
+        </a>
+    </button>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>予約削除確認</h2>
+<p>下記予約を削除しますがよろしいでしょうか？</p>
+<p>
+    予約ID {{ object.id }}
+</p>
+<p>
+    お名前 {{ object.last_name }} {{ object.first_name }}
+</p>
+<p>
+    予約日時 {{ object.reservation_date|date:"Y/n/d" }} 
+    {{ time }}
+</p>
+<p>
+    予約人数 {{ object.reservation_count }}
+</p>
+<p>
+    電話番号 {{ object.tell }}
+</p>
+<p>
+    お祝い {{ celebration_existence }}
+</p>
+<p>
+    お店への要望 {{ object.demand }}
+</p>
+<button>
+    <a href="{% url 'reservations:reservationDetail' pk=object.id %}">
+    戻る
+    </a>
+</button>
+<form method="POST">
+{% csrf_token %}
+<input type="submit" value="削除" onClick="return Check()">
+</form>
+
+<script type="text/javascript">
+   function Check(){
+       var checked = confirm("本当に削除してよろしいでしょうか？");
+       if (checked == true) {
+           return true;
+       } else {
+           return false;
+       }
+   }
+</script>
+{% endblock %}

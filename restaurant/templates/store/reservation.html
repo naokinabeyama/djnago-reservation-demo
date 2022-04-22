@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>予約登録</h2>
+<h2>■ご予約内容を入力してください。</h2>
+<form method='POST' novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            【{{ error }}】
+        {% endfor %}
+    {% endif %}
+    <p>
+        お名前 {{ form.last_name }} {{ form.first_name }}
+    </p>
+    <p>
+        来店日時 {{ form.reservation_day}} {{ form.reservation_time }}
+    </p>
+    <p>
+        来店人数 {{ form.reservation_count }}
+    </p>
+    <p>
+        電話番号 {{ form.tell }}
+    </p>
+    <p>
+        お祝い {{ form.celebration_existence }}
+    </p>
+    <p>
+        お店への要望 {{ form.demand }}
+    </P>
+    <button>
+        <a href="{% url 'users:home' %}">
+        戻る
+        </a>
+    </button>
+    <input type='submit' value='予約する'>
+</form>
+{% endblock %}

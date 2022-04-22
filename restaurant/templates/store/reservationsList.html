@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% block content %}
+<form method='GET' action="{% url 'reservations:reservationsList' %}">
+    <p>予約ID: <input type="text" name="id" value="{{ id }}"></p>
+    <p>
+        予約者: 
+        <input type="text" name="last_name" value="{{ last_name }}"> <input type='text' name='first_name' value="{{ first_name }}">
+    </p>
+    <p>
+        予約日:
+        <input type="date" name ="start_day" value="{{ start_day }}"> 
+        <input type="date" name="end_day" value="{{ end_day }}">
+    </p>
+    <p>
+        予約人数: 
+        <select name='reservation_count'>
+            <option value="{{ reservation_count }}">{{ reservation_count }}</option>
+            <option value=></option>
+            <option value=1>1</option>
+            <option value=2>2</option>
+            <option value=3>3</option>
+            <option value=4>4</option>
+            <option value=5>5</option>
+            <option value=6>6</option>
+        </select>
+    </p>
+    <p>電話番号: <input type="text" name="tell" value="{{ tell }}"></p>
+    <p>予約受付日: <input type="date" name="created_at" value="{{ created_at }}"></p>
+    <p><input type="submit" value="検索"></p>
+</form>
+<table>
+    <tr>
+        <th>予約ID</th>
+        <th>予約者</th>
+        <th>予約日</th>
+        <th>予約時間</th>
+        <th>予約人数</th>
+        <th>予約受付日</th>
+        <th>電話番号</th>
+    </tr>
+    {% for object in object_list %}
+    <tr>
+        <td>
+            <a href="{% url 'reservations:reservationDetail' object.id %}">
+                {{ object.id }}
+            </a>
+        </td>
+        <td>{{ object.last_name}} {{ object.first_name }}</td>
+        <td>{{ object.reservation_date|date:"Y/n/d" }}</td>
+        <td>{{ object.reservation_date|date:"H:i" }}</td>
+        <td>{{ object.reservation_count }}人</td>
+        <td>{{ object.created_at|date:"Y/n/d" }}</td>
+        <td>{{ object.tell }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">前へ</span>
+                </a>
+                </li>
+        
+                <!-- 「前へ」と「次へ」の間の装飾文字 -->
+                {% comment %} <li class="page-item">
+                <span class="sr-only">..........</span>
+                </li> {% endcomment %}
+            {% endif %}
+        
+        
+            {% for num in paginator.page_range %}
+                {% if num <= page_obj.number|add:2 and num >= page_obj.number|add:-2 %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                        <span class="page-link">
+                        {{ num }}
+                        <span class="sr-only">⇦</span>
+                        </span>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" pagearia-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">次へ</span>
+                </a>
+                </li>
+            {% endif %}
+        
+            <li class="p-md-2">
+            {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </li>
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

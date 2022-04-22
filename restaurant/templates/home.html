@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>top page</h1>
+<a href="{% url 'reservations:reservation' %}">
+    予約ページへ
+</a>
+<a href="{% url 'users:admin_login' %}">
+    管理者画面
+</a>
+{% endblock %}
